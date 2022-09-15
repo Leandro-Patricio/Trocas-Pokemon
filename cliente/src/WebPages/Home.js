@@ -1,15 +1,34 @@
 import pkmMasterApi from "../functions/pkmMasterApi";
+import { useEffect, useState } from "react";
 
 const Home = () => {
-  const infoApi = pkmMasterApi().then((nome) => {
-    console.log(nome);
-    res.send(nome);
-  });
+  const [dataDeUltimaModificacao, setDataDeUltimaModificacao] = useState("");
+
+  useEffect(() => {
+    const qualquercoisa = async () => {
+      const respostaDaApi = await pkmMasterApi();
+      const { dataDeUltimaModificacao } = respostaDaApi[0];
+      setDataDeUltimaModificacao(dataDeUltimaModificacao);
+    };
+    qualquercoisa();
+  }, []);
+
+  const handleOnClick = async () => {
+    console.log("nada aqui");
+  };
   return (
-    <section>
-      <div>eweqwewqe</div>
-      <div>dsdas</div>
-    </section>
+    <>
+      {!dataDeUltimaModificacao ? (
+        "Carregando..."
+      ) : (
+        <section>
+          <h1>Seja bem vindo à Poke-Trocas</h1>
+
+          <div onClick={() => handleOnClick()}>Clique aqui</div>
+          <div></div>
+        </section>
+      )}
+    </>
   );
 };
 

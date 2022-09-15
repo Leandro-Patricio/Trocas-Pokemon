@@ -1,60 +1,49 @@
-const axios = require("axios");
+const getInfoPkm = async () => {
+  const reposta = await fetch(
+    "https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json"
+  );
+  return await reposta;
+};
 
 const pkmMasterApi = async () => {
-  const resposta = await axios
-    .get("https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json")
-    .then((res) => {
-      const dataUltimaModificacao = resposta.headers["last-modified"];
-      const todosPkm = resposta.data;
-      let respostaFinal = [dataUltimaModificacao];
-      let pkmTemporario = [];
-      let imgPkmTemporaria = [];
-      let desctructureImgTemporaria = [];
-      const linkProcuradoDasImg = "Addressable%20Assets";
+  const infoBrutaApi = await getInfoPkm();
+  const dataUltimaModificacao = infoBrutaApi.headers.get("Last-Modified");
 
-      /* formando o bando de dados */
-      for (let index = 0; index < todosPkm.length; index++) {
-        desctructureImgTemporaria = todosPkm[index].assetForms;
+  const todosPkm = await infoBrutaApi.json();
 
-        /* pegando as imagens na pasta correta */
-        for (
-          let index2 = 0;
-          index2 < desctructureImgTemporaria.length;
-          index2++
-        ) {
-          if (
-            desctructureImgTemporaria[index2].image.includes(
-              linkProcuradoDasImg
-            )
-          ) {
-            imgPkmTemporaria.push({
-              imagem: desctructureImgTemporaria[index2].image,
-              imagemShinny: desctructureImgTemporaria[index2].shinyImage,
-            });
-          }
-        }
+  let respostaFinal = [{ dataDeUltimaModificacao: dataUltimaModificacao }];
+  let pkmTemporario = [];
+  let imgPkmTemporaria = [];
+  let infoTempImg = [];
+  const linkProcuradoDasImg = "Addressable%20Assets";
 
-        pkmTemporario = {
-          id: index,
-          numPokedex: todosPkm[index].dexNr,
-          nome: todosPkm[index].names.English,
-          imagens: imgPkmTemporaria,
-        };
-        respostaFinal.push(pkmTemporario);
+  /* formando o bando de dados */
+  for (let index = 0; index < todosPkm.length; index++) {
+    infoTempImg = todosPkm[index].assetForms;
 
-        pkmTemporario = [];
-        imgPkmTemporaria = [];
-        desctructureImgTemporaria = [];
+    /* pegando as imagens na pasta correta */
+    for (let index2 = 0; index2 < infoTempImg.length; index2++) {
+      if (infoTempImg[index2].image.includes(linkProcuradoDasImg)) {
+        imgPkmTemporaria.push({
+          imagem: infoTempImg[index2].image,
+          imagemShinny: infoTempImg[index2].shinyImage,
+        });
       }
+    }
 
-      /*  console.log(respostaFinal); */
-      return respostaFinal;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    pkmTemporario = {
+      id: index,
+      numPokedex: todosPkm[index].dexNr,
+      nome: todosPkm[index].names.English,
+      imagens: imgPkmTemporaria,
+    };
+    respostaFinal.push(pkmTemporario);
 
-  /*   const respostaFinal = JSON.stringify(resposta.data.id); */
+    pkmTemporario = [];
+    imgPkmTemporaria = [];
+    infoTempImg = [];
+  }
+  return respostaFinal;
 };
 
 export default pkmMasterApi;
