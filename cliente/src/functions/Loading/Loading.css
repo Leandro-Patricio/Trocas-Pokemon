@@ -1,0 +1,69 @@
+.Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transform: translateY(35vh);
+}
+
+.pokebola {
+  width: 50px;
+  height: 50px;
+  animation: girarPokebola 3s linear infinite;
+}
+
+.invisivel {
+  opacity: 0;
+}
+
+.Loading {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  animation-name: girarSetas;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.seta {
+  width: 50px;
+
+  /*  animation: rodando 5s linear 0s infinite normal none;
+*/
+}
+
+.baixo {
+  transform: translateX(-15px);
+}
+
+.cima {
+  transform: rotate(180deg) translateX(-15px);
+}
+
+@keyframes girarSetas {
+  0% {
+    transform: rotate(0deg);
+  }
+  49% {
+    transform: rotate(-360deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes girarPokebola {
+  0% {
+    transform: translateY(-100px) rotate(0deg) scale(1);
+  }
+  51% {
+    transform: translateY(-100px) rotate(0deg) scale(1);
+  }
+  75% {
+    transform: translateY(-100px) rotate(-180deg) scale(2);
+  }
+  100% {
+    transform: translateY(-100px) rotate(-360deg) scale(1);
+  }
+}

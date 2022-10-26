@@ -14,7 +14,10 @@ const Home = () => {
   }, []);
 
   const handleOnClick = async () => {
-    console.log("nada aqui");
+    const respostaDaApi = await pkmMasterApi();
+    const { dataDeUltimaModificacao } = respostaDaApi[0];
+    setDataDeUltimaModificacao(dataDeUltimaModificacao);
+    console.log(dataDeUltimaModificacao)
   };
   return (
     <>
